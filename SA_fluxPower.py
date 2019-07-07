@@ -60,7 +60,7 @@ try:
         ds = yt.load('%s/%s/RD%04d/RD%04d'\
                          %(dataRepo, simname, d,d))
 except:
-    ds = yt.load('%s/%s/DD%08d/DD%08d'\
+    ds = yt.load('%s/%s/DD%08d/data%08d'\
         %(DataRepo, simname, d, d)) 
 z = ds.current_redshift
 Hz = ds.cosmology.hubble_parameter(z).to('km/s/Mpc')
@@ -70,9 +70,9 @@ fmean = np.loadtxt('%s/%s/RD%04d/meanFluxPerPixel.txt'\
 fmean = np.float(fmean)
 if rank == 0: print('using mean flux: %f'%fmean)
 L_v = L_com * Hz/(1+z)
-dv = L_v/(4*dim) #match the spectra generation lambda binwidth
+dv = L_v/(dim) #match the spectra generation lambda binwidth
 k_v = 2.0*np.pi/L_v
-wavenumber = k_v*np.array(range(1, 4*dim//2))
+wavenumber = k_v*np.array(range(1, dim//2))
 
 powerSum = 0
 cnt = 0
@@ -103,7 +103,7 @@ cnts = comm.reduce(cnt, root=0, op=MPI.SUM)
 if rank == 0:
     print('Used %d spectra to generate'%cnts)
     powerSums = np.array(powerSums)/cnts
-    powerSums = powerSums[1:4*dim//2]
+    powerSums = powerSums[1:dim//2]
     np.savetxt('%s/%s/RD%04d/fluxPowerWaveNum.txt'\
                     %(OutsDir, simname, d),\
                     wavenumber)

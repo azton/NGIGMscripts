@@ -3,4 +3,7 @@ comet/resolution_study/01_4l
 64
 HD
 10
-50
+1200
+
+Completed: SA_generatePDFs with 12000 and mean flux      0.7818648189705812
+Completed: SA_fluxPower with 12000 spectra

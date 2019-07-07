@@ -89,7 +89,7 @@ try:
                      %(DataRepo, simname, d, d))
         print ('using redshift output at z = %0.3f'%(ds.current_redshift))
 except:
-    ds = yt.load('%s/%s/DD%08d/DD%08d'\
+    ds = yt.load('%s/%s/DD%08d/data%08d'\
                 %(DataRepo, simname, d, d))
     print ('using data output at z = %0.3f'%(ds.current_redshift))
 
@@ -133,7 +133,8 @@ for i in range(keepPerRank):
             f = open('pipelines/%s_RD%04d_pipeline.info'%(simname, d), 'w')
             f.write('%s\n%d\n%d\n%s\n%d\n%d\n'%(simname,d,dim,sys.argv[4], size, max(counts) ))
             f.close()
-            os.system('cd %s; tar -cvf rays.tar rays; mv rays.tar %s/rayData/%s/RD%04d/'\
+            if dataLoc.upper() == 'COMET':
+                os.system('cd %s; tar -cvf rays.tar rays; mv rays.tar %s/rayData/%s/RD%04d/'\
                           %(dataRepo, scriptsdir, simname, d))
 
 if rank==0: 

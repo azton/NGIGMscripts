@@ -60,7 +60,7 @@ try:
         ds = yt.load('%s/%s/RD%04d/RD%04d'\
                          %(DataRepo, simname, d,d))
 except:
-    ds = yt.load('%s/%s/DD%08d/DD%08d'\
+    ds = yt.load('%s/%s/DD%08d/data%08d'\
                 %(DataRepo, simname, d, d))
 z = ds.current_redshift
 width = ds.domain_width.to("Mpc")[0]
@@ -105,7 +105,7 @@ for r in localRanks:
                 sg = trident.SpectrumGenerator(\
 		    lambda_min=lambda_min, \
 		    lambda_max=lambda_max, \
-		    dlambda=(lambda_max-lambda_min)/(4*dim))
+		    dlambda=(lambda_max-lambda_min)/(dim))
                 sg.make_spectrum(rFile, lines=['H I 1216'])
                 sg.save_spectrum (sFile)
                 count += 1

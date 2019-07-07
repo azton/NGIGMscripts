@@ -3,4 +3,7 @@ frontera/resolution_study/02_6l
 64
 HD
 10
-50
+120
+
+Completed: SA_generatePDFs with 1200 and mean flux      0.7885976910573246
+Completed: SA_fluxPower with 1200 spectra

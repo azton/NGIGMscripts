@@ -13,7 +13,7 @@ import numpy as np
 import sys, math
 
 
-f = open('%s_RD%04d_pipeline.info'%(sys.argv[1], int(sys.argv[2])), 'r')
+f = open('pipelines/%s_RD%04d_pipeline.info'%(sys.argv[1], int(sys.argv[2])), 'r')
 lines = [line for line in f]
 simname = lines[0].strip()
 d = int(lines[1].strip())
@@ -26,7 +26,7 @@ if dataLoc == 'BW':
     scriptsdir = '/u/sciteam/wells/scratch/prodRun/scripts'
     dataRepo = scriptsdir
 elif dataLoc == 'HD':
-    workdir = '/oasis/scratch/comet/azton/temp_project/nextGenIGM'
+    workdir = '/home/azton/research/nextGenIGM'
     dataRepo = workdir+'/scripts'#scripts/final_dataRepo'
     scriptsdir = workdir+'/scripts'
     analysisDir = workdir+'/analysis'
@@ -71,23 +71,23 @@ mcdataFlux=[5.1e-1, 1.8e-1, 1.2e-1, 1.3e-1, \
             0.2, 0.25,0.28,0.38, 0.55, 0.8, 1.7, 5, 9 ]
 datawave = [9.5e-3, 5e-3, 1.5e-3, 1.5e-2, 4.5e-2, 9.5e-2, 1.5e-1 ]
 dataPower = [18.75, 16.5, 12.5, 6., 1.8,0.14, 2e-2]
-dataPower = [dataPower[i]*datawave[i]/math.pi for i in range(len(dataPower))]
-pfCometFlux = np.loadtxt('/home/azton/simulations/pengfei_scripts/flux_pdf_RD0105_original_1024_comet_new.txt')
-pfCometPower = np.loadtxt('/home/azton/simulations/pengfei_scripts/power_RD0105_1024_comet.txt')
+dataPower = [dataPower[i]/math.pi for i in range(len(dataPower))]
+# pfCometFlux = np.loadtxt('/home/azton/simulations/pengfei_scripts/flux_pdf_RD0105_original_1024_comet_new.txt')
+# pfCometPower = np.loadtxt('/home/azton/simulations/pengfei_scripts/power_RD0105_1024_comet.txt')
 
 
 fig, ax = plt.subplots(1,2, figsize=(8,4))
 ax[0].plot(fluxbins[:-1], fluxhist, label= simname)
-ax[0].plot(pfCometFlux[0][:], pfCometFlux[1][:], label="PFC Comet", alpha=0.4)
+# ax[0].plot(pfCometFlux[0][:], pfCometFlux[1][:], label="PFC Comet", alpha=0.4)
 ax[0].set_yscale('log')
 ax[0].errorbar(dbins[:-1], dataFlux,yerr=dferror, \
             label='Rollinde 2012 UVES', markersize=4, color = 'r', alpha=0.4)
 ax[0].scatter(dbins[:-1], mcdataFlux, label='McDonald/Jena SDSS', s=4, c='k', alpha=0.4)
 #ax[1].set_ylim([1e-2, 5e1])
 #ax[1].set_xlim([4e-4, 2.5e-1])
-powerhist = powerhist*wavenums/math.pi
+powerhist = powerhist/math.pi
 ax[1].loglog(wavenums, powerhist, label = simname)
-ax[1].loglog(pfCometPower[0][:], pfCometPower[1][:]*pfCometPower[0][:]/math.pi, label="PFC Comet")
+# ax[1].loglog(pfCometPower[0][:], pfCometPower[1][:]*pfCometPower[0][:]/math.pi, label="PFC Comet")
 ax[1].scatter(datawave, dataPower, label='est. data', s=5, c='r')
 ax[1].legend()
 ax[0].set_title(simname+'_RD%04d'%d)
